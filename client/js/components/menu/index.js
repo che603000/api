@@ -36,7 +36,6 @@ const options = [
             icon: "remove",
             url: "#structure"
         }
-
     },
     {
         type: "Header",
@@ -54,7 +53,8 @@ const options = [
             {
                 type: "SubItem",
                 props: {
-                    name: "Бухгалтерия"
+                    name: "Бухгалтерия",
+                    url: "#buh"
                 }
 
             }

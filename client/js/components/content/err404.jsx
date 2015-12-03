@@ -3,12 +3,15 @@
 class Content extends React.Component {
     constructor(props) {
         super();
+
     }
 
     render(){
         return(
             <div id="page-title">
-                <h1 className="page-header text-overflow">Структура АПИ</h1>
+                <h1 className="page-header text-overflow">404 - нет такой страницы</h1>
+
+
             </div>
         )
     }

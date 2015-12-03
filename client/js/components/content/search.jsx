@@ -1,6 +1,6 @@
 "use strict";
 
-class Main extends React.Component {
+class Content extends React.Component {
     constructor(props) {
         super();
 
@@ -25,7 +25,7 @@ class Main extends React.Component {
 }
 
 
-module.exports = Main;
+module.exports = Content;
 
 
 

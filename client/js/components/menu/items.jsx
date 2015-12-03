@@ -50,10 +50,26 @@ export class SubItem extends Item {
 }
 
 export class SubMenu extends React.Component {
+    state = {
+        collapse: true
+    }
+
+    constructor(props) {
+        super(props);
+    }
+
+
+    onClick(e) {
+        e.stopPropagation();
+        e.preventDefault();
+        this.setState({collapse: !this.state.collapse});
+        return false;
+    }
+
     render() {
         return (
             <li>
-                <a href="#">
+                <a href="#" onClick={this.onClick.bind(this)}>
                     <i className="fa fa-services"></i>
                         <span className="menu-title">
                             <strong>{this.props.name}</strong>
@@ -62,7 +78,7 @@ export class SubMenu extends React.Component {
                 </a>
 
 
-                <ul className="collapse">
+                <ul className={this.state.collapse?"collapse":""}>
                     {this.props.children}
                 </ul>
             </li>

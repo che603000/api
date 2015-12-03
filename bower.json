@@ -17,9 +17,8 @@
     "jquery": "~2.1.4",
     "bootstrap": "~3.3.5",
     "react": "~0.14.2",
-    "react-dom": "~0.1.0",
     "fastclick": "~1.0.6",
     "PACE": "pace#~1.0.2",
-    "react-router-component": "~0.18.2"
+    "backbone": "~1.2.3"
   }
 }

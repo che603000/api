@@ -28,8 +28,7 @@ gulp.task('dev', ['clean'], function () {
 });
 
 gulp.task('api-dev', ['css', 'font', 'img', 'webpack', 'libs'], function () {
-    gulp.src('./client/index.html')
-        .pipe(gulp.dest('./public/'));
+    return true;
 });
 
 

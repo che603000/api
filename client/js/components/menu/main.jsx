@@ -1,24 +1,44 @@
 "use strict";
 
-var React = require('react');
+import _ from 'underscore';
 import Lib from './items';
-
+import Backbone from 'backbone';
 
 export default class MainMenu extends React.Component {
+    _itemActive = null
+
     constructor(props) {
         super();
-        this.options= props.options;
-        setTimeout(()=> {
-            console.log(this);
-        }, 1000)
+        this.options = props.options;
     }
 
+    componentDidMount() {
+        //this.active(this.props.active);
+        Backbone.history.on('route', this.onHistory, this );
+    }
+
+    onHistory(router, route, params){
+        //debugger;
+        var h = Backbone.history.fragment;
+        this.active("#"+h);
+
+    }
+
+    active(url) {
+        if (this._itemActive)
+            this._itemActive.setActive(false);
+
+        if (this.refs[url]) {
+            this._itemActive = this.refs[url];
+            this._itemActive.setActive(true);
+        }
+    }
 
     itemRender(menu) {
         var children = [],
             props = menu.props;
 
-        if(!menu.type || !menu.props.name ) {
+        if (!menu.type || !menu.props.name) {
             console.log(menu);
             throw Error('not name or type...');
         }
@@ -42,16 +62,3 @@ export default class MainMenu extends React.Component {
         )
     }
 }
-
-//{this.itemRender(Header, {name:"Компания"})}
-//{this.itemRender(Item, {name:"Поиск сотрудника", icon:"fa fa-search", url:"#search/90"})}
-//
-//<Item name="Структура АПИ" icon="fa fa-dashboard" active ref="#company"/>
-//<Header name="Новости..."/>
-//    <Item name="Вакансии" icon="fa fa-search"/>
-//    <Item name="Мир АПИ" icon="fa fa-dashboard"/>
-//    <Header name="Приложения"/>
-//    <SubMenu name="Сервисы АПИ">
-//    <SubItem name="Бухгалтерия"></SubItem>
-//    <SubItem name="Контроль времени"></SubItem>
-//    </SubMenu>

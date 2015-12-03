@@ -1,6 +1,5 @@
 "use strict";
 
-var React = require('react');
 
 export class Header extends React.Component {
     render() {
@@ -14,15 +13,14 @@ export class Item extends React.Component {
     }
 
     state = {
-        active: !!this.props.active
+        active: false
     }
 
     onClick(e) {
-        this.active(true);
-        console.log(this.props);
+
     }
 
-    active(value) {
+    setActive(value) {
         this.setState({active: value});
     }
 

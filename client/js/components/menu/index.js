@@ -2,10 +2,18 @@
  * Created by alex on 02.12.2015.
  */
 "use strict";
-var ReactDOM = require('react-dom');
+
 import Menu from './main'
 
 const options = [
+    {
+        type: "Item",
+        props: {
+            name: "Главная",
+            icon: "star",
+            url: "#main"
+        }
+    },
     {
         type: "Header",
         props: {
@@ -17,7 +25,7 @@ const options = [
         props: {
             name: "Поиск сотрудника",
             icon: "search",
-            url: "#search/90"
+            url: "#search"
         }
 
     },
@@ -26,8 +34,7 @@ const options = [
         props: {
             name: "Структура АПИ",
             icon: "remove",
-            url: "#strucure",
-            active: true
+            url: "#structure"
         }
 
     },
@@ -40,7 +47,8 @@ const options = [
     {
         type: "SubMenu",
         props: {
-            name: "Сервисы АПИ"
+            name: "Сервисы АПИ",
+            url:"#error"
         },
         subItems: [
             {
@@ -54,8 +62,7 @@ const options = [
     }
 ];
 
-
 ReactDOM.render(
-    <Menu options={options}/>,
+    <Menu options={options} active="#structure"/>,
     document.getElementById('mainnav-menu-wrap')
 );

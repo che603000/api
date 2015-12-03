@@ -13,7 +13,7 @@ gulp.task('libs', function () {
         '**/bootstrap.js',
         '**/pace.js',
         '**/fastclick.js',
-        '**/bootstrap.js',
+
     ]))
         .pipe(concat('libs.js'))
         .pipe(gulp.dest('./public/js/'));

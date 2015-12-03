@@ -16,7 +16,6 @@ var path = require("path"),
 
 var conf  = require('../webpack.config');
 
-console.log(conf.resolve);
 
 gulp.task('js', () => {
     return gulp.src('./client/js/libs/*.js')
@@ -24,7 +23,7 @@ gulp.task('js', () => {
         .pipe(gulp.dest('./public/js/'));
 });
 
-gulp.task('webpack', ['js'], function () {
+gulp.task('webpack',function () {
     return webpack(conf, function (err, stats) {
         if (err)
             throw new gutil.PluginError("webpack", err);

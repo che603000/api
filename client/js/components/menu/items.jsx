@@ -2,8 +2,10 @@
 
 
 export class Header extends React.Component {
+
     render() {
-        return <li className="list-header">{this.props.name}</li>
+        var menu = this.props.menu.props;
+        return <li className="list-header">{menu.name}</li>
     }
 }
 
@@ -13,24 +15,34 @@ export class Item extends React.Component {
     }
 
     state = {
-        active: false
+        active: this.isActive(this.props)
     }
 
     onClick(e) {
 
     }
 
-    setActive(value) {
-        this.setState({active: value});
+    isActive(props) {
+        //debugger;
+        return props.active === this.props.route;
+        //return RegExp('^#' + props.active, 'i').test(props.href);
+    }
+
+    componentWillReceiveProps(nextProps) {
+        this.setState({active: this.isActive(nextProps)});
+    }
+
+    get activeClass(){
+        return this.state.active?"active-link":"";
     }
 
     render() {
-
+        var menu = this.props.menu.props;
         return (
-            <li className={this.state.active?"active-link":""}>
-                <a href={this.props.url || "#"} onClick={this.onClick.bind(this)}>
-                    <i className={this.props.icon?("fa fa-"+this.props.icon):""}></i>
-                    <span className="menu-title">{this.props.name}</span>
+            <li className={this.activeClass}>
+                <a href={menu.href || "#"} onClick={this.onClick.bind(this)}>
+                    <i className={menu.icon?("fa fa-"+menu.icon):""}></i>
+                    <span className="menu-title">{menu.name}</span>
                 </a>
             </li>
         )
@@ -39,10 +51,11 @@ export class Item extends React.Component {
 
 export class SubItem extends Item {
     render() {
+        var menu = this.menu.props;
         return (
-            <li className={this.state.active?"active-link":""}>
-                <a href={this.props.url || "#"} onClick={this.onClick.bind(this)}>
-                    {this.props.name}
+            <li className={this.activeClass}>
+                <a href={menu.href || "#"} onClick={this.onClick.bind(this)}>
+                    {menu.name}
                 </a>
             </li>
         )
@@ -67,12 +80,13 @@ export class SubMenu extends React.Component {
     }
 
     render() {
+        var menu = this.props.menu.props;
         return (
             <li>
                 <a href="#" onClick={this.onClick.bind(this)}>
                     <i className="fa fa-services"></i>
                         <span className="menu-title">
-                            <strong>{this.props.name}</strong>
+                            {menu.name}
                         </span>
                     <i className="arrow"></i>
                 </a>

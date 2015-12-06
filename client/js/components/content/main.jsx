@@ -1,21 +1,20 @@
 "use strict";
 
-class Content extends React.Component {
+class Main extends React.Component {
     constructor(props) {
         super();
     }
-
     render(){
         return(
             <div id="page-title">
-                <h1 className="page-header text-overflow">Главная страница...</h1>
+                <h1 className="page-header text-overflow">Cтраница {this.props.route}</h1>
             </div>
         )
     }
 }
 
 
-module.exports = Content;
+module.exports = Main;
 
 
 

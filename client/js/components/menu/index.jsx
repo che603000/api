@@ -2,7 +2,7 @@
 
 import _ from 'underscore';
 import Lib from './items';
-import Backbone from 'backbone';
+//import Backbone from 'backbone';
 
 export default class MainMenu extends React.Component {
     state = {
@@ -14,19 +14,19 @@ export default class MainMenu extends React.Component {
         this.options = props.options;
     }
 
-    itemRender(options) {
+    itemRender(options, index) {
         var menu = options.menu,
             children = [],
-            props =options;
+            props = options;
 
         if (!menu.type || !menu.props.name) {
-                console.log(menu);
-                throw Error('not name or type...');
+            console.log(menu);
+            throw Error('not name or type...');
         }
 
-        _.extend(props, {key: props.route, active: this.state.active});
-        if (menu.subItems)
-            children = menu.subItems.map(opt=> this.itemRender(opt));
+        _.extend(props, {key: "menu" + index, active: this.state.active});
+        if (options.subItems)
+            children = options.subItems.map((opt, index)=> this.itemRender(opt, index));
 
         return React.createElement(Lib[menu.type], props, children);
     }
@@ -36,7 +36,7 @@ export default class MainMenu extends React.Component {
             <div className="nano">
                 <div className="nano-content">
                     <ul id="mainnav-menu" className="list-group">
-                        {this.options.map(opt=>this.itemRender(opt), this)}
+                        {this.options.map((opt, index)=>this.itemRender(opt, index), this)}
                     </ul>
                 </div>
             </div>

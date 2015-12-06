@@ -4,15 +4,9 @@
 
 "use strict";
 
-//require('./router');
-//import '../../bower_components/bootstrap/dist/css/bootstrap-theme.min.css';
-import '../../bower_components/bootstrap/dist/css/bootstrap.min.css'
-import "../css/nifty.min.css"
-import "../css/font-awesome.min.css"
-import "../css/pace.min.css"
 
+import './style'
 
-import Backbone from 'backbone';
 import Menu from './components/menu';
 import Content from './components/content';
 
@@ -129,6 +123,43 @@ const opt = [
             props: {}
         }
     },
+    {
+        route: null,
+        menu: {
+            type: "Header",
+            props: {
+                name: "Приложения",
+            }
+        },
+    },
+    {
+        route: "",
+        menu: {
+            type: "SubMenu",
+            props: {
+                name: "Сервисы",
+                icon: "list",
+            },
+
+        },
+        subItems:[
+            {
+                route: "main1",
+                menu: {
+                    type: "Item",
+                    props: {
+                        name: "Главная1",
+                        icon: "remove",
+                        href: "#main1",
+                    }
+                },
+                content: {
+                    module: "static",
+                    props: {}
+                }
+            },
+        ]
+    },
 ];
 
 var Workspace = Backbone.Router.extend({
@@ -138,6 +169,7 @@ var Workspace = Backbone.Router.extend({
         //        o.regRoute  = this._routeToRegExp(o.route);
         //        return o;
         //    });
+        this.route("*err", "err404", require('./routes/err404'));
         this.createRoutes(this.options);
         this.render(this.options);
 
@@ -172,9 +204,11 @@ var Workspace = Backbone.Router.extend({
     },
 
     createRoutes(options){
-        this.route("*err", "err404", require('./routes/err404'));
         options.forEach(o=> {
-            this.route(o.route, o.route, require('./routes/' + o.content.module).bind(this, o));
+            o.route && this.route(o.route, o.route, require('./routes/' + o.content.module).bind(this, o));
+
+            if(o.subItems)
+                this.createRoutes(o.subItems);
         });
     },
 

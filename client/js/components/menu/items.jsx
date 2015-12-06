@@ -14,30 +14,33 @@ export class Item extends React.Component {
         super(props);
     }
 
-    state = {
-        active: this.isActive(this.props)
-    }
+    //state = {
+    //    active: this.isActive(this.props)
+    //}
 
     onClick(e) {
 
     }
 
-    isActive(props) {
+    get isActive() {
         //debugger;
-        return props.active === this.props.route;
-        //return RegExp('^#' + props.active, 'i').test(props.href);
+        //return props.active === this.props.route;
+        return this.props.active === this.props.route;
     }
 
-    componentWillReceiveProps(nextProps) {
-        this.setState({active: this.isActive(nextProps)});
-    }
+    //componentWillReceiveProps(nextProps) {
+    //    this.setState({active: this.isActive(nextProps)});
+    //    console.log(this.props);
+    //}
 
-    get activeClass(){
-        return this.state.active?"active-link":"";
+    get activeClass() {
+        return this.isActive ? "active-link" : "";
     }
 
     render() {
         var menu = this.props.menu.props;
+
+
         return (
             <li className={this.activeClass}>
                 <a href={menu.href || "#"} onClick={this.onClick.bind(this)}>
@@ -51,7 +54,7 @@ export class Item extends React.Component {
 
 export class SubItem extends Item {
     render() {
-        var menu = this.menu.props;
+        var menu = this.props.menu.props;
         return (
             <li className={this.activeClass}>
                 <a href={menu.href || "#"} onClick={this.onClick.bind(this)}>
@@ -69,28 +72,42 @@ export class SubMenu extends React.Component {
 
     constructor(props) {
         super(props);
+
     }
 
+    componentWillReceiveProps(props) {
+        // открыть sub меню  если пункт активный --
+        this.props.subItems.forEach((item)=> {
+            if (item.route === props.active)
+                this.setClose(false);
+        });
+    }
+
+    setClose(isOpen) {
+        this.setState({collapse: isOpen});
+    }
 
     onClick(e) {
         e.stopPropagation();
         e.preventDefault();
-        this.setState({collapse: !this.state.collapse});
+        this.setClose(!this.state.collapse);
         return false;
     }
+
 
     render() {
         var menu = this.props.menu.props;
         return (
             <li>
                 <a href="#" onClick={this.onClick.bind(this)}>
+                    <i className={menu.icon?("fa fa-"+menu.icon):""}></i>
                     <i className="fa fa-services"></i>
+
                         <span className="menu-title">
                             {menu.name}
                         </span>
                     <i className="arrow"></i>
                 </a>
-
 
                 <ul className={this.state.collapse?"collapse":""}>
                     {this.props.children}

@@ -2,28 +2,22 @@
  * Created by alex on 02.12.2015.
  */
 
-var path = require("path");
-var webpack = require("webpack");
-var Clean = require('clean-webpack-plugin'),
-    CopyWebpackPlugin = require('copy-webpack-plugin');
+var path = require("path"),
+    webpack = require("webpack"),
+    Clean = require('clean-webpack-plugin'),
+    CopyWebpackPlugin = require('copy-webpack-plugin'),
     BowerWebpackPlugin = require('bower-webpack-plugin'),
     HtmlWebpackPlugin = require('html-webpack-plugin'),
     ExtractTextPlugin = require('extract-text-webpack-plugin');
 
-var conf = {
+module.exports = {
     debug: true,
     context: __dirname,
+    watch: true,
 
     entry: {
         app: "./client/js/app.js",
-        libs: "./client/js/init",
-        //test :"./client/js/test"
-
-        //"./client/js/libs/nifty.min.js"
-        //libs: ["underscore","jquery", "bootstrap", "fastclick", "pace", "./client/js/init", ]
-        //libs:["underscore"]
-        //common: ["bootstrap","pace","./client/js/libs/nifty.min.js"]
-        //common: ["underscore" , 'jquery',,"./client/js/libs/nifty.min.js"]
+        vendor: ['jquery', 'underscore', 'backbone', 'bootstrap']
     },
     output: {
         path: "./public",
@@ -31,7 +25,6 @@ var conf = {
     },
 
     resolve: {
-        root: [path.join(__dirname, "bower_components")],
         modulesDirectories: [
             "bower_components"
         ],
@@ -39,16 +32,16 @@ var conf = {
     },
     resolveLoader: {
         modulesDirectories: [
-            './node_modules'
+            'node_modules'
         ]
     },
 
     plugins: [
         new Clean(['public']),
         new CopyWebpackPlugin([
-            { from: './client/img', to: 'img' },
+            {from: './client/img', to: 'img'},
+            //{from: './client/js/libs/nifty.min.js' , to:"js"}
         ]),
-        //new webpack.optimize.CommonsChunkPlugin('libs', '/js/libs.js'),
         new BowerWebpackPlugin({
             modulesDirectories: ['bower_components'],
             manifestFiles: ['bower.json', '.bower.json'],
@@ -57,6 +50,8 @@ var conf = {
             excludes: /.*\.less$/
         }),
         new webpack.ProvidePlugin({
+            jQuery: "jquery",
+            "$": "jquery",
             React: "react/react",
             ReactDOM: "react"
         }),
@@ -65,14 +60,13 @@ var conf = {
             template: './client/index.html'
             //template: './client/test.html'
         }),
-        new webpack.SourceMapDevToolPlugin(
-            '/js/app.js.map', null,
-            "[absolute-resource-path]", "[absolute-resource-path]"
-        ),
-        new ExtractTextPlugin('/css/styles.css')
-
+        new webpack.SourceMapDevToolPlugin('/js/app.js.map', null, "[absolute-resource-path]", "[absolute-resource-path]"),
+        new ExtractTextPlugin('/css/styles.css', {
+            allChunks: true,
+            disable: false
+        }),
+        new webpack.optimize.CommonsChunkPlugin('vendor', '/js/vendor.js'),
     ],
-
     module: {
         loaders: [
             {
@@ -94,7 +88,7 @@ var conf = {
             //{test: /\.hbs$/, loader: 'handlebars-loader'},
             {
                 test: /\.(eot|woff|woff2|ttf|svg)($|\?)/,
-                loader: 'url-loader?limit=30000&name=/fonts/[name].[ext]'
+                loader: 'url-loader?&limit=30000&name=/fonts/[name].[ext]'
             },
             {
                 test: /\.(gif|png|jpg)($|\?)/,
@@ -102,20 +96,7 @@ var conf = {
             },
         ]
     },
-    externals: {
-        //don't bundle the 'react' npm package with our bundle.js
-        //but get it from a global 'React' variable
-        //"underscore": "_",
-        //jquery: "jQuery",
-        //"react-dom": 'ReactDOM',
-        //"react": 'React',
-        //"react-bootstrap":"ReactBootstrap",
-        //"backbone": 'Backbone',
-        //"leaflet" :"L",
-        //"backbone.validation": "Backbone.validation",
-        //"fastclick": "FastClick"
-    },
-    // watch: true
+
+    externals: {},
 };
 
-module.exports = conf;

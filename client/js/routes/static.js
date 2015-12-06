@@ -1,6 +1,7 @@
 /**
  * Created by Александр on 04.12.2015.
  */
+"use strict";
 
 import Main from '../components/content/main'
 

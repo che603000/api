@@ -1,8 +1,13 @@
 "use strict";
 
 import _ from 'underscore';
-import Lib from './items';
-//import Backbone from 'backbone';
+
+var Lib = {
+    Header: require('./header'),
+    Item: require('./item'),
+    SubMenu: require('./subMenu')
+};
+
 
 export default class MainMenu extends React.Component {
     state = {
@@ -24,11 +29,11 @@ export default class MainMenu extends React.Component {
             throw Error('not name or type...');
         }
 
-        _.extend(props, {key: "menu" + index, active: this.state.active});
-        if (options.subItems)
-            children = options.subItems.map((opt, index)=> this.itemRender(opt, index));
-
-        return React.createElement(Lib[menu.type], props, children);
+        _.extend(props, {key: menu.props.name + index, active: this.state.active});
+        //if (options.subItems)
+        //    children = options.subItems.map((opt, index)=> this.itemRender(opt, index));
+        var comp = Lib[menu.type];
+        return React.createElement(comp, props);
     }
 
     render() {

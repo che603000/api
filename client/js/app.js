@@ -10,72 +10,7 @@ import './style'
 import Menu from './components/menu';
 import Content from './components/content';
 
-const options = [
-    {
-        type: "Item",
-        props: {
-            name: "Главная",
-            icon: "star",
-            url: "#main",
-        }
-    },
-    {
-        type: "Header",
-        props: {
-            name: "Компания"
-        }
-    },
-    {
-        type: "Item",
-        props: {
-            name: "Поиск сотрудника",
-            icon: "search",
-            url: "#search",
-        }
 
-    },
-    {
-        type: "Item",
-        props: {
-            name: "Структура АПИ",
-            icon: "list",
-            url: "#structure"
-        }
-    },
-    {
-        type: "Header",
-        props: {
-            name: "Приложения"
-        }
-    },
-    {
-        type: "SubMenu",
-        props: {
-            name: "Сервисы АПИ",
-            url: "#error"
-        },
-        subItems: [
-            {
-                type: "Item",
-                props: {
-                    name: "Бухгалтерия",
-                    icon: "remove",
-                    url: "#buh"
-                }
-
-            },
-            {
-                type: "SubItem",
-                props: {
-                    name: "Кадры",
-                    icon: "remove",
-                    url: "#buh"
-                }
-
-            }
-        ]
-    }
-];
 
 const opt = [
     {
@@ -171,11 +106,13 @@ var Workspace = Backbone.Router.extend({
         //    });
         this.route("*err", "err404", require('./routes/err404'));
         this.createRoutes(this.options);
-        this.render(this.options);
+        this.render();
 
-        Backbone.history
-            .on('route', this.onRoute, this)
-            .start({root: "/wep-api/public/"});
+        Backbone.history.on('route', this.onRoute, this);
+        //Backbone.history.once('route', this.render, this);
+        Backbone.history.start({root: "/wep-api/public/"})
+        //debugger;
+
     },
     onRoute(router, route, params){
         this.setActiveMenu(route);
@@ -212,11 +149,12 @@ var Workspace = Backbone.Router.extend({
         });
     },
 
-    render(options){
-        this.menu = this.renderMenu("main", options);
+    render(){
+        this.menu = this.renderMenu("main", this.options);
         this.content = this.renderContent("main");
     },
     renderMenu(active, options){
+        console.log("rm");
         return ReactDOM.render(
             <Menu options={options} active={active}/>,
             document.getElementById('mainnav-menu-wrap')

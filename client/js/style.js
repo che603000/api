@@ -7,5 +7,6 @@
 import '../../bower_components/bootstrap/dist/css/bootstrap.min.css'
 import "../css/nifty.min.css"
 import "../css/font-awesome.min.css"
+import "../css/test.css"
 
 

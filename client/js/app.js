@@ -4,119 +4,29 @@
 
 "use strict";
 
-
 import './style'
-
 import Menu from './components/menu';
 import Content from './components/content';
 
-
-
-const opt = [
-    {
-        route: "main",
-        menu: {
-            type: "Item",
-            props: {
-                name: "Главная",
-                icon: "star",
-                href: "#main",
-            }
-        },
-        content: {
-            module: "static",
-            props: {}
-        }
-    },
-    {
-        route: "new",
-        menu: {
-            type: "Item",
-            props: {
-                name: "Новости",
-                icon: "star",
-                href: "#new",
-            }
-        },
-        content: {
-            module: "static",
-            props: {}
-        }
-    },
-    {
-        route: "new/api/:index",
-        menu: {
-            type: "Item",
-            props: {
-                name: "Новости АПИ",
-                icon: "star",
-                href: "#new/api/0",
-            }
-        },
-        content: {
-            module: "static",
-            props: {}
-        }
-    },
-    {
-        route: null,
-        menu: {
-            type: "Header",
-            props: {
-                name: "Приложения",
-            }
-        },
-    },
-    {
-        route: "",
-        menu: {
-            type: "SubMenu",
-            props: {
-                name: "Сервисы",
-                icon: "list",
-            },
-
-        },
-        subItems:[
-            {
-                route: "main1",
-                menu: {
-                    type: "Item",
-                    props: {
-                        name: "Главная1",
-                        icon: "remove",
-                        href: "#main1",
-                    }
-                },
-                content: {
-                    module: "static",
-                    props: {}
-                }
-            },
-        ]
-    },
-];
+const opt = require('./config.js');
 
 var Workspace = Backbone.Router.extend({
     initialize(options){
         this.options = options;
-        //.map(o=>{
-        //        o.regRoute  = this._routeToRegExp(o.route);
-        //        return o;
-        //    });
-        this.route("*err", "err404", require('./routes/err404'));
-        this.createRoutes(this.options);
+        this.menus = options.menus;
+        this.routes = options.routes;
+
+        this.route("*err", "err404", ()=> {
+        });
+        this.createRoutes(this.routes);
         this.render();
 
-        Backbone.history.on('route', this.onRoute, this);
-        //Backbone.history.once('route', this.render, this);
-        Backbone.history.start({root: "/wep-api/public/"})
+        Backbone.history
+            .on('route', this.onHistory, this)
+            .start({root: "/wep-api/public/"});
         //debugger;
-
     },
-    onRoute(router, route, params){
-        this.setActiveMenu(route);
-    },
+    key: {},
     routes: {
         // "*page": "menu",
         //"": "render",
@@ -130,8 +40,12 @@ var Workspace = Backbone.Router.extend({
         //"search/:query/p:page": "search"   // #search/kiwis/p7
     },
 
-    setActiveMenu(name){
-        this.menu.setState({active: name});
+    onHistory(router, route, params){
+        //debugger;
+        var options = this.key[route];
+        var path = './routes/' + options.module;
+
+        require(path).call(this, Backbone.history.fragment, params, options);
     },
     setActiveContent(name, options){
         this.content.setState({
@@ -142,21 +56,19 @@ var Workspace = Backbone.Router.extend({
 
     createRoutes(options){
         options.forEach(o=> {
-            o.route && this.route(o.route, o.route, require('./routes/' + o.content.module).bind(this, o));
-
-            if(o.subItems)
-                this.createRoutes(o.subItems);
+            this.route(o.route, o.route, ()=> {
+            });
+            this.key[o.route] = o;
         });
     },
 
     render(){
-        this.menu = this.renderMenu("main", this.options);
+        this.menu = this.renderMenu("main", this.menus);
         this.content = this.renderContent("main");
     },
     renderMenu(active, options){
-        console.log("rm");
         return ReactDOM.render(
-            <Menu options={options} active={active}/>,
+            <Menu options={options} history={Backbone.history}/>,
             document.getElementById('mainnav-menu-wrap')
         );
     },
@@ -168,7 +80,6 @@ var Workspace = Backbone.Router.extend({
     }
 
 });
-
 
 new Workspace(opt);
 

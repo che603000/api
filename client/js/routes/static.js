@@ -1,12 +1,11 @@
-/**
+/*
  * Created by Александр on 04.12.2015.
  */
+
 "use strict";
 
-import Main from '../components/content/main'
+import AjaxContent from '../components/content/ajax';
 
-module.exports = function (opt, index) {
-    //debugger;
-    console.log(Backbone.history, opt);
-    this.setActiveContent(Main, opt);
+module.exports = function (url, params, options) {
+    this.setActiveContent(AjaxContent, {url: url, params: params, options: options});
 };

@@ -40,6 +40,7 @@ module.exports = {
         new Clean(['public']),
         new CopyWebpackPlugin([
             {from: './client/img', to: 'img'},
+            {from: './client/content', to: 'content'},
             //{from: './client/js/libs/nifty.min.js' , to:"js"}
         ]),
         new BowerWebpackPlugin({

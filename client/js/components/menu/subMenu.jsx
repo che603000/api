@@ -16,46 +16,46 @@ class SubMenu extends React.Component {
         super(props);
     }
 
-    componentWillReceiveProps(props) {
-        // открыть sub меню  если пункт активный --
-        //this.props.subItems.forEach((item)=> {
-        //    if (props.options.route === props.active)
-        //        this.setClose(false);
-        //});
+    close() {
+        this.setState({collapse: true});
     }
 
-    setClose(isOpen) {
-        this.setState({collapse: isOpen});
+    open() {
+        this.setState({collapse: false});
     }
 
     onClick(e) {
         e.stopPropagation();
         e.preventDefault();
-        this.setClose(!this.state.collapse);
+        if (this.state.collapse)
+            this.open()
+        else
+            this.close();
+
         return false;
     }
 
-    itemRender(options, index) {
-        var menu = options.menu;
-
-        if (!menu.type || !menu.props.name) {
-            console.log(menu);
+    itemRender(menu, index) {
+        if (!menu.type || !menu.options.name)
             throw Error('not name or type...');
-        }
-
-        var props = _.extend({key: this.props.name + index, active: this.props.active}, options);
-
-        return React.createElement(Lib[menu.type], props);
+        else
+            return React.createElement(
+                Lib[menu.type],
+                _.extend({
+                    key: menu.options.name + index,
+                    history: this.props.history,
+                    openSubMenu: this.open.bind(this)
+                }, menu)
+            );
     }
 
     render() {
-        var menu = this.props.menu.props;
+        var menu = this.props.options;
         return (
             <li>
                 <a href="#" onClick={this.onClick.bind(this)}>
                     <i className={menu.icon?("fa fa-"+menu.icon):""}></i>
                     <i className="fa fa-services"></i>
-
                         <span className="menu-title">
                             {menu.name}
                         </span>
@@ -63,7 +63,7 @@ class SubMenu extends React.Component {
                 </a>
 
                 <ul className={this.state.collapse?"collapse":""}>
-                    {this.props.subItems.map((opt, index)=>this.itemRender(opt, index), this)}
+                    {this.props.subMenu.map((opt, index)=>this.itemRender(opt, index), this)}
                 </ul>
             </li>
         )

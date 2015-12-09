@@ -5,6 +5,6 @@
 
 import Err404 from '../components/content/err404'
 
-module.exports = function (url) {
-    this.setActiveContent(Err404, {path: url});
+module.exports = function (url, params, options) {
+    this.setActiveContent(Err404, {status: 404, message:'страница не найдена'});
 };

@@ -21,6 +21,8 @@
     "jquery": "~2.1.4",
     "bootstrap": "~3.3.5",
     "react": "~0.14.2",
-    "backbone": "~1.2.3"
+    "backbone": "~1.2.3",
+    "node-markdown": "~0.1.0",
+    "marked": "~0.3.5"
   }
 }

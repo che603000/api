@@ -10,14 +10,15 @@ module.exports = {
             }
         },
         {
-            "route": "new",
+            "route": "search",
             "type": "Item",
             "options": {
-                "name": "Новости",
+                "name": "Поиск",
                 "icon": "star",
-                "href": "#new"
+                "href": "#search"
             }
-        }, {
+        },
+        {
             "route": "new/:index",
             "type": "Item",
             "options": {
@@ -66,8 +67,8 @@ module.exports = {
             options: {}
         },
         {
-            route: "new",
-            module: "static",
+            route: "search",
+            module: "search",
             options: {}
 
         },

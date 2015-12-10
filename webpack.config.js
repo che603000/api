@@ -11,13 +11,13 @@ var path = require("path"),
     ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 module.exports = {
-    debug: true,
+    debug: false,
     context: __dirname,
     watch: true,
 
     entry: {
         app: "./client/js/app.js",
-        vendor: ['jquery', 'underscore', 'backbone', 'bootstrap']
+        vendor: ['jquery', 'underscore', 'backbone', 'bootstrap'],//, './client/js/vendor/nifty']
     },
     output: {
         path: "./public",
@@ -61,7 +61,7 @@ module.exports = {
             template: './client/index.html'
             //template: './client/test.html'
         }),
-        new webpack.SourceMapDevToolPlugin('/js/app.js.map', null, "[absolute-resource-path]", "[absolute-resource-path]"),
+        //new webpack.SourceMapDevToolPlugin('/js/app.js.map', null, "[absolute-resource-path]", "[absolute-resource-path]"),
         new ExtractTextPlugin('/css/styles.css', {
             allChunks: true,
             disable: false

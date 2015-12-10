@@ -1,6 +1,18 @@
 "use strict";
 
 import Err404 from './err404'
+var md = require('marked');
+
+//md.setOptions({
+//    renderer: new md.Renderer(),
+//    gfm: true,
+//    tables: true,
+//    breaks: false,
+//    pedantic: false,
+//    sanitize: true,
+//    smartLists: true,
+//    smartypants: false
+//});
 
 export  default class AjaxContent extends React.Component {
 
@@ -23,13 +35,14 @@ export  default class AjaxContent extends React.Component {
     }
 
     _load(props) {
-        var url = `./content/${props.url}.html`;
+        var url = `./content/${props.url}.md`;
         $.get(url)
             .done(this._success.bind(this))
             .fail(this._error.bind(this));
     }
 
-    _success(html) {
+    _success(text) {
+        var html = md(text);//, true);
         this.setState({content: html, err: null});
     }
 

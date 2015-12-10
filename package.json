@@ -13,6 +13,7 @@
     "express": "~4.13.1",
     "express-ntlm": "^2.1.4",
     "extract-text-webpack-plugin": "^0.9.1",
+    "httpntlm": "^1.5.2",
     "jade": "~1.11.0",
     "morgan": "~1.6.1"
   },

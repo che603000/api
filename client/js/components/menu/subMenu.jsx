@@ -49,6 +49,22 @@ class SubMenu extends React.Component {
             );
     }
 
+    get collapseAttr() {
+        if (this.state.collapse)
+            return {
+                className: "collapse",
+                "aria-expanded": false,
+                style: {
+                    height: '0px'
+                }
+            }
+        else
+            return {
+                className: "collapse in",
+                "aria-expanded": true
+            }
+    }
+
     render() {
         var menu = this.props.options;
         return (
@@ -62,12 +78,15 @@ class SubMenu extends React.Component {
                     <i className="arrow"></i>
                 </a>
 
-                <ul className={this.state.collapse?"collapse":""}>
+                <ul {...this.collapseAttr}>
                     {this.props.subMenu.map((opt, index)=>this.itemRender(opt, index), this)}
                 </ul>
             </li>
         )
     }
 }
-module.exports = SubMenu;
+
+module
+    .
+    exports = SubMenu;
 
